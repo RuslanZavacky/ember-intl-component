@@ -1,4 +1,4 @@
-ember-intl-blocks
+ember-intl-named-blocks
 ==============================================================================
 
 [Short description of the addon.]
@@ -16,7 +16,7 @@ Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-intl-blocks
+ember install ember-intl-named-blocks
 ```
 
 

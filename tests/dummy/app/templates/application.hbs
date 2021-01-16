@@ -1,3 +1,16 @@
 <h2 id="title">Welcome to Ember</h2>
 
+<T @id="dummy.welcome">
+  <:name>Zoe</:name>
+</T>
+
+<T @id="dummy.paragraph">
+  <:link>
+    <a href="https://www.emberjs.com">ember.js</a>
+  </:link>
+  <:component>
+    <TestComponent @text="Explore ember.js"/>
+  </:component>
+</T>
+
 {{outlet}}
