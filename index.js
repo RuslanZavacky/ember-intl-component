@@ -86,6 +86,42 @@ module.exports = {
     return true;
   },
 
+  options: {
+    // nodeAssets: {
+    //   '@babel/standalone': {
+    //     import: ['babel.js']
+    //   }
+    // },
+    // autoImport: {
+    //   exclude: [
+    //     'babel-plugin-ember-modules-api-polyfill',
+    //     'babel-plugin-debug-macros'
+    //   ]
+    // },
+    // 'ember-cli-babel': {
+    //   includePolyfill: true
+    // },
+  },
+
+  included() {
+    this._super.included.apply(this, arguments);
+
+    let app = this._findHost(this);
+
+    app.options['ember-cli-babel'] = {
+      includePolyfill: true,
+    };
+
+    app.options['nodeAssets'] = {
+      '@babel/standalone': {
+        import: ['babel.js'],
+      },
+    };
+
+    app.import('vendor/shims/babel.js');
+    app.import('vendor/shims/path.js');
+  },
+
   setupPreprocessorRegistry(type, registry) {
     const plugin = this._buildPlugin();
 
