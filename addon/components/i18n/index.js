@@ -8,15 +8,13 @@ import { guidFor } from '@ember/object/internals';
 import { cached } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 
-export default class TComponent extends Component {
+export default class I18nComponent extends Component {
   @service intl;
 
   @cached
   get componentName() {
     const { args } = this;
     const { i18nid, htmlSafe } = args;
-
-    console.log('i18nid', i18nid);
 
     assert('i18nid is a required attribute', i18nid !== undefined);
 
