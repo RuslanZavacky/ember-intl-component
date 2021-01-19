@@ -23,12 +23,9 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
-    "@babel/standalone": "^7.12.12",
-    "broccoli-stew": "^3.0.0",
     "ember-cli-babel": "^7.22.1",
     "ember-cli-htmlbars": "^5.3.1",
-    "ember-named-blocks-polyfill": "^0.2.4",
-    "ember-cli-node-assets": "^0.2.2"
+    "ember-cached-decorator-polyfill": "^0.1.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
@@ -68,9 +65,6 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "before": [
-      "ember-named-blocks-polyfill"
-    ]
+    "configPath": "tests/dummy/config"
   }
 }

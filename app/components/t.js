@@ -1,1 +1,0 @@
-export { default } from 'ember-intl-named-blocks/components/t';

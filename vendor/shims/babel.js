@@ -6,7 +6,5 @@
     return { 'default': self['Babel'] };
   }
 
-  console.log('does it work?', vendorModule());
-
   define('@babel/core', [], vendorModule);
 })();
