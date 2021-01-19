@@ -1,6 +1,6 @@
 {
-  "name": "ember-intl-named-blocks",
-  "version": "0.0.0",
+  "name": "ember-intl-component-string",
+  "version": "0.0.1",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"

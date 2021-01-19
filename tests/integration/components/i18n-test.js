@@ -22,6 +22,7 @@ module('Integration | Component | i18n', function(hooks) {
       'test.welcome': 'Welcome, {name}!',
       'test.plural': '{count, plural, =1 {# complex part} other {# complex parts}}',
       'test.paragraph': '<p>Lets test {count, plural, =1 {# complex part} other {# complex parts}}  with {type}. [[[link]]] to the outer world. Or [[[component]]].</p>',
+      'test.component': 'Welcome, <TestComponent @text="Zoe" />!',
     })
   });
 
@@ -64,5 +65,11 @@ module('Integration | Component | i18n', function(hooks) {
     `);
 
     assert.equal(cleanOutput(this.element.innerHTML), `<p>Lets test 1 complex part with HTML. <a href="https://www.emberjs.com">ember.js</a> to the outer world. Or <b>testing</b> .</p>`);
+  });
+
+  test('it renders component with htmlSafe=true', async function(assert) {
+    await render(hbs`<I18n @i18nid="test.component" @htmlSafe={{true}} />`);
+
+    assert.equal(cleanOutput(this.element.innerHTML), `Welcome, <b>Zoe</b>!`);
   });
 });

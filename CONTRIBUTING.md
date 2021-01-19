@@ -3,7 +3,7 @@
 ## Installation
 
 * `git clone <repository-url>`
-* `cd ember-intl-named-blocks`
+* `cd ember-intl-component-string
 * `yarn install`
 
 ## Linting

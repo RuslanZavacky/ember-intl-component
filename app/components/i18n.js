@@ -1,1 +1,1 @@
-export { default } from 'ember-intl-named-blocks/components/i18n';
+export { default } from 'ember-intl-component-string/components/i18n';
