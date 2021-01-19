@@ -1,16 +1,45 @@
-<h2 id="title">Welcome to Ember</h2>
+<h2>Translation definition</h2>
 
-<T @id="dummy.welcome">
-  <:name>Zoe</:name>
-</T>
+<pre>{{this.translations}}</pre>
 
-<T @id="dummy.paragraph">
-  <:link>
-    <a href="https://www.emberjs.com">ember.js</a>
-  </:link>
-  <:component>
+<h2>Simple key, without block</h2>
+
+<I18n @i18nid="dynamic.dummy.welcome" @name="Zoe" />
+
+<br/><br/>
+
+<h2>Advanced key, with block</h2>
+
+<I18n @i18nid="dynamic.dummy.paragraph" @type="XML" @count="2" as |block|>
+  {{#if (eq block "link")}}
+    <a href="https://ember-intl.github.io/ember-intl/">ember-intl</a>
+  {{else if (eq block "component")}}
+    <TestComponent @text="Explore ember-intl"/>
+  {{/if}}
+</I18n>
+
+<br/><br/>
+
+<h2>Repeat advanced key, with block, with different attributes</h2>
+
+<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="1" as |block|>
+  {{#if (eq block "link")}}
+    <a href="http://example.org/">example.org</a>
+  {{else if (eq block "component")}}
     <TestComponent @text="Explore ember.js"/>
-  </:component>
-</T>
+  {{/if}}
+</I18n>
+
+<br/><br/>
+
+<h2>Repeat advanced key, with block, with different attributes and marked as htmlSafe=true</h2>
+
+<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="1" @htmlSafe={{true}} as |block|>
+  {{#if (eq block "link")}}
+    <a href="http://example.org/">example.org</a>
+  {{else if (eq block "component")}}
+    <TestComponent @text="Explore ember.js"/>
+  {{/if}}
+</I18n>
 
 {{outlet}}

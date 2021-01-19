@@ -1,0 +1,1 @@
+export { default } from 'ember-intl-component-string/components/i18n';
