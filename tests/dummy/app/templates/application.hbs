@@ -12,36 +12,37 @@
 
 <h2>Advanced key, with block</h2>
 
-<I18n @i18nid="dynamic.dummy.paragraph" @type="XML" @count="2" as |block|>
-  {{#if (eq block "link")}}
-    <a href="https://ember-intl.github.io/ember-intl/">ember-intl</a>
-  {{else if (eq block "component")}}
-    <TestComponent @text="Explore ember-intl"/>
-  {{/if}}
+<I18n @i18nid="dynamic.dummy.paragraph" @type="XML" @count="2" as |MessageScope|>
+  <MessageScope>
+    <:link><a href="https://ember-intl.github.io/ember-intl/">ember-intl</a></:link>
+    <:component>
+      <TestComponent @text="Explore ember-intl"/>
+    </:component>
+  </MessageScope>
 </I18n>
 
 <br/><br/>
 
 <h2>Repeat advanced key, with block, with different attributes</h2>
 
-<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="1" as |block|>
-  {{#if (eq block "link")}}
-    <a href="http://example.org/">example.org</a>
-  {{else if (eq block "component")}}
-    <TestComponent @text="Explore ember.js"/>
-  {{/if}}
+<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="5" as |MessageScope|>
+  <MessageScope>
+    <:link><a href="http://example.org/">example.org</a></:link>
+    <:component>
+      <TestComponent @text="Explore ember.js"/>
+    </:component>
+  </MessageScope>
 </I18n>
 
 <br/><br/>
 
 <h2>Repeat advanced key, with block, with different attributes and marked as htmlSafe=true</h2>
 
-<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="1" @htmlSafe={{true}} as |block|>
-  {{#if (eq block "link")}}
-    <a href="http://example.org/">example.org</a>
-  {{else if (eq block "component")}}
-    <TestComponent @text="Explore ember.js"/>
-  {{/if}}
+<I18n @i18nid="dynamic.dummy.paragraph" @type="HTML" @count="1" @htmlSafe={{true}} as |MessageScope|>
+  <MessageScope>
+    <:link><a href="http://example.org/">example.org</a></:link>
+    <:component><TestComponent @text="Explore ember.js"/></:component>
+  </MessageScope>
 </I18n>
 
 {{outlet}}
