@@ -1,3 +1,6 @@
-{{#component this.componentName as |block|}}
-  {{yield block}}
-{{/component}}
+{{#if (has-block)}}
+  {{yield this.componentName.component}}
+{{else}}
+  {{this.componentName.component}}
+{{/if}}
+

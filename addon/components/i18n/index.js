@@ -1,12 +1,8 @@
 import Component from '@glimmer/component';
-import { setComponentTemplate } from '@ember/component';
-import { compileTemplate } from '@ember/template-compilation';
-import { getOwner } from '@ember/application';
 import { inject as service } from '@ember/service';
-import templateOnlyComponent from "@ember/component/template-only";
-import { guidFor } from '@ember/object/internals';
 import { cached } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
+import { compileHBS } from 'ember-repl';
 
 export default class I18nComponent extends Component {
   @service intl;
@@ -18,8 +14,6 @@ export default class I18nComponent extends Component {
 
     assert('i18nid is a required attribute', i18nid !== undefined);
 
-    const componentName = this.getComponentName(args);
-
     const i18nArgs = { ...args };
 
     delete i18nArgs.i18id;
@@ -28,54 +22,43 @@ export default class I18nComponent extends Component {
     const i18nString = this.intl.t(i18nid, i18nArgs);
 
     if (htmlSafe === true) {
-      this.htmlComponent(componentName, i18nString);
-    } else {
-      this.plainComponent(componentName, i18nString);
+      return this.htmlComponent(i18nString);
     }
 
-    return componentName;
+    return this.plainComponent(i18nString);
   }
 
-  getComponentName(args) {
-    return `translated/${guidFor(args)}`;
+  htmlComponent(i18nString) {
+    // TODO: ideally think about sanitization of some sort, to at least
+    // prevent some form of script tag and other properties where JS
+    // can get in
+
+    i18nString = i18nString.replace(/\[\[\[(.*?)\]\]\]/g, '{{yield to="$1"}}');
+
+    return compileHBS(i18nString);
   }
 
-  htmlComponent(componentName, i18nString) {
-    i18nString = i18nString.replace(/\[\[\[(.*?)\]\]\]/g, '{{yield "$1"}}');
+  plainComponent(i18nString) {
+    const parts = i18nString.split(/(\[\[\[.*?\]\]\])/g).map((part) => {
+      const matches = part.match(/\[\[\[.*?\]\]\]/);
+      const value = matches !== null ? part.replace(/\[|\]/g, '') : null;
+      return value ? [part, value] : [part];
+    });
 
-    getOwner(this).register(`component:${componentName}`, setComponentTemplate(
-      compileTemplate(i18nString),
-      templateOnlyComponent()
-    ));
-  }
-
-  plainComponent(componentName, i18nString) {
-    const hbsContent = `{{#each this.parts as |part|}}
-    {{#if (eq part.length 2)}}
-      {{yield (get part "1")}}
-    {{else}}
-      {{get part "0"}}
-    {{/if}}
-{{/each}}`;
-
-    const parts = i18nString.split(/(\[\[\[.*?\]\]\])/g);
-
-    const componentClass = class Foo extends Component {
-      parameterRegex = /\[\[\[.*?\]\]\]/;
-
-      get parts() {
-        return parts.map((part) => {
-          const matches = part.match(this.parameterRegex);
-          const value = matches !== null ? part.replace(/\[|\]/g, '') : null;
-
-          return value ? [part, value] : [part];
-        });
+    const hbsContent = parts.reduce((hbs, part, idx) => {
+      if (part.length === 2) {
+        hbs = `${hbs}{{yield to="${part[1]}"}}`;
+      } else {
+        hbs = `${hbs}{{get (get parts ${idx}) "0"}}`;
       }
-    };
 
-    getOwner(this).register(`component:${componentName}`, setComponentTemplate(
-      compileTemplate(hbsContent),
-      componentClass,
-    ));
+      return hbs;
+    }, '');
+
+    return compileHBS(hbsContent, {
+      scope: {
+        parts,
+      }
+    });
   }
 }

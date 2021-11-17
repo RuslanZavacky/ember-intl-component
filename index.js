@@ -6,12 +6,4 @@ module.exports = {
   isDevelopingAddon() {
     return true;
   },
-
-  included() {
-    this._super.included.apply(this, arguments);
-
-    const app = this._findHost(this);
-
-    app.import('vendor/ember/ember-template-compiler.js');
-  },
 };
