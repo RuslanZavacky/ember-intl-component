@@ -1,4 +1,4 @@
-ember-intl-component-string
+ember-intl-component
 ==============================================================================
 
 Allows using component to render i18n strings and substitute attributes with
@@ -33,7 +33,7 @@ Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-intl-component-string
+ember install ember-intl-component
 ```
 
 Usage
