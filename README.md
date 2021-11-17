@@ -1,7 +1,7 @@
 ember-intl-component-string
 ==============================================================================
 
-Allows to use component to render i18n strings and substitute attributes with
+Allows using component to render i18n strings and substitute attributes with
 components.
 
 ```yaml
@@ -9,12 +9,15 @@ translation.key: '<p>Lets test {count, plural, =1 {# complex part} other {# comp
 ```
 
 ```handlebars
-<I18n @i18nid="translation.key" @type="XML" @count="2" as |block|>
-  {{#if (eq block "link")}}
-    <a href="https://ember-intl.github.io/ember-intl/">ember-intl</a>
-  {{else if (eq block "component")}}
-    <TestComponent @text="Explore ember-intl"/>
-  {{/if}}
+<I18n @i18nid="translation.key" @type="XML" @count="2" as |MessageScope|>
+  <MessageScope>
+    <:link>
+      <a href="https://ember-intl.github.io/ember-intl/">ember-intl</a>
+    </:link>
+    <:component>
+      <TestComponent @text="Explore ember-intl"/>
+    </:component>
+  </MessageScope>
 </I18n>
 ```
 
@@ -32,7 +35,6 @@ Installation
 ```
 ember install ember-intl-component-string
 ```
-
 
 Usage
 ------------------------------------------------------------------------------
@@ -65,10 +67,12 @@ translation.key: 'With component: [[[welcome]]]',
 ```
 
 ```handlebars
-<I18n @i18nid="translation.key" as |block|>
-  {{#if (eq blocks "welcome")}}
-    <WelcomeComponent />
-  {{/if}}
+<I18n @i18nid="translation.key" as |MessageScope|>
+  <MessageScope>
+    <:welcome>
+      <WelcomeComponent />
+    </:welcome>
+  </MessageScope>
 </I18n>
 ```
 
@@ -94,7 +98,7 @@ Welcome, to Ember Zoe and Tomster!
 ```
 
 P.S Keep in mind, as it will render _any_ html passed to it, even `<script>` tags.
-Only use that where you are 100% sure that content is ssafe.
+Only use that where you are 100% sure that content is safe.
 
 Contributing
 ------------------------------------------------------------------------------
