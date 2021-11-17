@@ -29,6 +29,7 @@
 /yarn-error.log
 /yarn.lock
 .gitkeep
+.idea
 
 # ember-try
 /.node_modules.ember-try/
