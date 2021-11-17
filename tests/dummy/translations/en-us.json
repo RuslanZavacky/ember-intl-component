@@ -1,4 +1,4 @@
 {
   "dummy.welcome": "Welcome, {name}!",
-  "dummy.paragraph": "<p>Lets test more complex parts with HTML. {link} to the outer world. Or {component}.</p>"
+  "dummy.paragraph": "<p>Lets test {count, plural, =1 {# complex part} other {# complex parts}}  with {type}. [[[link]]] to the outer world. Or [[[component]]].</p>"
 }
