@@ -1,6 +1,9 @@
 import Component from '@glimmer/component';
+import { dasherize } from '@ember/string';
+import { getOwner } from '@ember/application';
 import { inject as service } from '@ember/service';
 import { cached } from '@glimmer/tracking';
+import { getTemplateLocals } from '@glimmer/syntax';
 import { assert } from '@ember/debug';
 import { compileHBS } from 'ember-repl';
 import { setComponentTemplate } from '@ember/component';
@@ -37,7 +40,20 @@ class I18nComponent extends Component {
 
     i18nString = i18nString.replace(/\[\[\[(.*?)\]\]\]/g, '{{yield to="$1"}}');
 
-    return compileHBS(i18nString);
+    let owner = getOwner(this);
+    let locals = getTemplateLocals(i18nString);
+    let scope = {};
+
+    for (let local of locals) {
+      // Try to find in the registry
+      let kebabName = dasherize(local);
+      // Try components
+      let componentFactory = owner.factoryFor(`component:${kebabName}`);
+
+      scope[local] = componentFactory.class;
+    }
+
+    return compileHBS(i18nString, { scope });
   }
 
   plainComponent(i18nString) {
@@ -70,7 +86,9 @@ export default setComponentTemplate(
     {{#if (has-block)}}
       {{yield this.componentName.component}}
     {{else}}
-      {{this.componentName.component}}
+      {{#let this.componentName.component as |NoBlock|}}
+        <NoBlock />
+      {{/let}}
     {{/if}}
   `,
   I18nComponent
