@@ -3,8 +3,10 @@ import { inject as service } from '@ember/service';
 import { cached } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import { compileHBS } from 'ember-repl';
+import { setComponentTemplate } from '@ember/component';
+import { hbs } from 'ember-cli-htmlbars';
 
-export default class I18nComponent extends Component {
+class I18nComponent extends Component {
   @service intl;
 
   @cached
@@ -58,7 +60,18 @@ export default class I18nComponent extends Component {
     return compileHBS(hbsContent, {
       scope: {
         parts,
-      }
+      },
     });
   }
 }
+
+export default setComponentTemplate(
+  hbs`
+    {{#if (has-block)}}
+      {{yield this.componentName.component}}
+    {{else}}
+      {{this.componentName.component}}
+    {{/if}}
+  `,
+  I18nComponent
+);

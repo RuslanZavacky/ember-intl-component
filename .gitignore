@@ -23,6 +23,12 @@
 # ember-try
 /.node_modules.ember-try/
 /bower.json.ember-try
+/npm-shrinkwrap.json.ember-try
 /package.json.ember-try
+<<<<<<< HEAD
 
 .idea/
+=======
+/package-lock.json.ember-try
+/yarn.lock.ember-try
+>>>>>>> e562134 (v3.28.4...v4.2.0)
