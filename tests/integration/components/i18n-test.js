@@ -27,32 +27,32 @@ module('Integration | Component | i18n', function (hooks) {
 
   test('it renders simple parameters', async function (assert) {
     await render(hbs`<I18n @i18nid="test.welcome" @name="Zoe" />`);
-    assert.equal(this.element.textContent.trim(), 'Welcome, Zoe!');
+    assert.strictEqual(this.element.textContent.trim(), 'Welcome, Zoe!');
   });
 
   test('it renders plural case', async function (assert) {
     await render(hbs`<I18n @i18nid="test.plural" @count="1" />`);
-    assert.equal(this.element.textContent.trim(), '1 complex part');
+    assert.strictEqual(this.element.textContent.trim(), '1 complex part');
 
     await render(hbs`<I18n @i18nid="test.plural" @count="2" />`);
-    assert.equal(this.element.textContent.trim(), '2 complex parts');
+    assert.strictEqual(this.element.textContent.trim(), '2 complex parts');
   });
 
   test('it renders complex string without HTML', async function (assert) {
     await render(hbs`
-      <I18n @i18nid="test.paragraph" @count="1" @type="HTML" as |Blocks|>
-        <Blocks>
+      <I18n @i18nid="test.paragraph" @count="1" @type="HTML" as |MessageScope|>
+        <MessageScope>
           <:link>
             <a href="https://www.emberjs.com">ember.js</a>
           </:link>
           <:component>
             <TestComponent @text="testing" />
           </:component>
-        </Blocks>
+        </MessageScope>
       </I18n>
     `);
 
-    assert.equal(
+    assert.strictEqual(
       cleanOutput(this.element.innerHTML),
       `&lt;p&gt;Lets test 1 complex part with HTML. <a href="https://www.emberjs.com">ember.js</a> to the outer world. Or <b>testing</b> .&lt;/p&gt;`
     );
@@ -60,16 +60,19 @@ module('Integration | Component | i18n', function (hooks) {
 
   test('it renders complex string with htmlSafe=true', async function (assert) {
     await render(hbs`
-       <I18n @i18nid="test.paragraph" @count="1" @type="HTML" @htmlSafe={{true}} as |blocks|>
-         {{#if (eq blocks "link")}}
-           <a href="https://www.emberjs.com">ember.js</a>
-         {{else if (eq blocks "component")}}
-           <TestComponent @text="testing" />
-         {{/if}}
+       <I18n @i18nid="test.paragraph" @count="1" @type="HTML" @htmlSafe={{true}} as |MessageScope|>
+         <MessageScope>
+           <:link>
+             <a href="https://www.emberjs.com">ember.js</a>
+           </:link>
+           <:component>
+             <TestComponent @text="testing" />
+           </:component>
+         </MessageScope>
        </I18n>
      `);
 
-    assert.equal(
+    assert.strictEqual(
       cleanOutput(this.element.innerHTML),
       `<p>Lets test 1 complex part with HTML. <a href="https://www.emberjs.com">ember.js</a> to the outer world. Or <b>testing</b> .</p>`
     );
@@ -80,7 +83,9 @@ module('Integration | Component | i18n', function (hooks) {
       <I18n @i18nid="test.component" @htmlSafe={{true}} />
     `);
 
-
-    assert.equal(cleanOutput(this.element.innerHTML), `Welcome, <b>Zoe</b>!`);
+    assert.strictEqual(
+      cleanOutput(this.element.innerHTML),
+      `Welcome, <b>Zoe</b>!`
+    );
   });
 });
