@@ -1,10 +1,15 @@
 import Component from '@glimmer/component';
+import { dasherize } from '@ember/string';
+import { getOwner } from '@ember/application';
 import { inject as service } from '@ember/service';
 import { cached } from '@glimmer/tracking';
+import { getTemplateLocals } from '@glimmer/syntax';
 import { assert } from '@ember/debug';
 import { compileHBS } from 'ember-repl';
+import { setComponentTemplate } from '@ember/component';
+import { hbs } from 'ember-cli-htmlbars';
 
-export default class I18nComponent extends Component {
+class I18nComponent extends Component {
   @service intl;
 
   @cached
@@ -35,7 +40,20 @@ export default class I18nComponent extends Component {
 
     i18nString = i18nString.replace(/\[\[\[(.*?)\]\]\]/g, '{{yield to="$1"}}');
 
-    return compileHBS(i18nString);
+    let owner = getOwner(this);
+    let locals = getTemplateLocals(i18nString);
+    let scope = {};
+
+    for (let local of locals) {
+      // Try to find in the registry
+      let kebabName = dasherize(local);
+      // Try components
+      let componentFactory = owner.factoryFor(`component:${kebabName}`);
+
+      scope[local] = componentFactory.class;
+    }
+
+    return compileHBS(i18nString, { scope });
   }
 
   plainComponent(i18nString) {
@@ -58,7 +76,20 @@ export default class I18nComponent extends Component {
     return compileHBS(hbsContent, {
       scope: {
         parts,
-      }
+      },
     });
   }
 }
+
+export default setComponentTemplate(
+  hbs`
+    {{#if (has-block)}}
+      {{yield this.componentName.component}}
+    {{else}}
+      {{#let this.componentName.component as |NoBlock|}}
+        <NoBlock />
+      {{/let}}
+    {{/if}}
+  `,
+  I18nComponent
+);
