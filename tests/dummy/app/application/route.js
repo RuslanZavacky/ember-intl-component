@@ -3,7 +3,8 @@ import { inject as service } from '@ember/service';
 
 const TRANSLATIONS = {
   'dynamic.dummy.welcome': 'Welcome, {name}!',
-  'dynamic.dummy.paragraph': '<p><script>console.log("should fail")</script> Lets test {count, plural, =1 {# complex part} other {# complex parts}}  with {type}. [[[link]]] to the outer world. Or [[[component]]].</p>',
+  'dynamic.dummy.paragraph':
+    '<p><script>console.log("should fail")</script> Lets test {count, plural, =1 {# complex part} other {# complex parts}}  with {type}. [[[link]]] to the outer world. Or [[[component]]].</p>',
 };
 
 export default class ApplicationRoute extends Route {
