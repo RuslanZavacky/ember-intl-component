@@ -6,4 +6,15 @@ module.exports = {
   isDevelopingAddon() {
     return true;
   },
+
+  autoImport: {
+    webpack: {
+      resolve: {
+        fallback: {
+          fs: false,
+          path: false,
+        },
+      },
+    },
+  },
 };
